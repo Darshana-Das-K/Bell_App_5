@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Bell App 5</string>
+    <string name="title_sign_in_screen">Sign In</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
+    <string name="select_title">Select</string>
+    <string name="back_button">Back Button</string>
+    <string name="selector">\" \"</string>
+    <string name="summary">Summary</string>
+
+</resources>
