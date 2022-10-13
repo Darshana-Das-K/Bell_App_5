@@ -1,25 +1,19 @@
 package com.example.bellapp5
 
-import android.icu.text.CaseMap.Title
 import androidx.annotation.StringRes
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.internal.composableLambda
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.example.bellapp5.ui.LoginScreen
-import com.example.bellapp5.ui.theme.MainScreen
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.bellapp5.ui.LoginScreen
+import com.example.bellapp5.ui.theme.MainScreen
 
 
 enum class BellAppScreen(@StringRes val title: Int) {
@@ -83,7 +77,12 @@ fun BellApp(
 
         ) {
             composable(route = BellAppScreen.Start.name) {
-                LoginScreen()
+                LoginScreen(
+                    onLoginButtonClicked = {
+                       // viewModel.setQuantity(it)
+                        navController.navigate(BellAppScreen.Selector.name)
+                    }
+                )
         }
             composable(route = BellAppScreen.Selector.name) {
                 MainScreen()
