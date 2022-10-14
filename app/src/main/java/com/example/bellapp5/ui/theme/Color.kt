@@ -2,8 +2,9 @@ package com.example.bellapp5.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val Teal900 = Color(0xFF004d40)
+val Teal500 = Color(0xFF39796b)
+val Indigo900 = Color(0xFF0b1259)
 
+val Green900 = Color(0xFF00251a)
+val IndigoDark = Color(0xFF000030)

@@ -1,177 +1,332 @@
-package com.example.bellapp5.ui.theme
+package com.example.bellapp5.ui
 
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.bellapp5.R
+import com.example.bellapp5.data.DateData
+import com.example.bellapp5.data.dateList
+var numberOfMeal: Int = 0
 
 //@Preview(showSystemUi = true)
 @Composable
 fun MainScreen() {
-    Text(text = "Hi")
+    Calender()
+    DueCard()
 
 }
-/*
+
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DateSelector() {
-    val year: Int
-    val month: Int
-    val day: Int
-
-    val calendar = Calendar.getInstance()
-    year = calendar.get(Calendar.YEAR)
-    month = calendar.get(Calendar.MONTH)
-    day = calendar.get(Calendar.DAY_OF_MONTH)
-  //  calendar.time = Date()
-    var date by remember {
-        mutableStateOf("")
-    }
-    Scaffold(
-
-        topBar = {
-            TopAppBar(title = { Text(text = "Select") })
-
-
-        },
-        content = {
-            AndroidView(factory = { CalendarView(it) }, update = {
-                it.setOnDateChangeListener { calendarView, year, month, day ->
-                }
-            })
-
-
-        },
-
-        )
-}/*
-  fun showDatePicker(context: Context){
-
-      val year: Int
-      val month: Int
-      val day: Int
-
-      val calendar = Calendar.getInstance()
-      year = calendar.get(Calendar.YEAR)
-      month = calendar.get(Calendar.MONTH)
-      day = calendar.get(Calendar.DAY_OF_MONTH)
-      calendar.time = Date()
-
-      val date = remember { mutableStateOf("") }
-      val datePickerDialog = DatePicker(
-
-      )
-
-      datePickerDialog.show()
-      }*/
-
-  //}
-//}
-    /*
-fun MyContent(){
-
-    // Fetching the Local Context
-    val mContext = LocalContext.current
-
-    // Declaring integer values
-    // for year, month and day
-    val mYear: Int
-    val mMonth: Int
-    val mDay: Int
-
-    // Initializing a Calendar
-    val mCalendar = Calendar.getInstance()
-
-    // Fetching current year, month and day
-    mYear = mCalendar.get(Calendar.YEAR)
-    mMonth = mCalendar.get(Calendar.MONTH)
-    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
-
-    mCalendar.time = Date()
-
-    // Declaring a string value to
-    // store date in string format
-    val mDate = remember { mutableStateOf("") }
-
-    // Declaring DatePickerDialog and setting
-    // initial values as current values (present year, month and day)
-    val mDatePickerDialog = DatePickerDialog(
-        mContext,
-        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
-        }, mYear, mMonth, mDay
+fun Calender() {
+    val number: Int
+    val PlayFair = FontFamily(
+        Font(R.font.playfair_display_bold)
     )
 
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    LazyColumn(
+        modifier = Modifier
+    ) {
+        stickyHeader {
+            Text(
+                text = "Total Amount: ",
+                fontFamily = PlayFair,
+                style = MaterialTheme.typography.h1,
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    //.padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colors.primary),
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
 
-        // Creating a button that on
-        // click displays/shows the DatePickerDialog
-      //  Button(onClick = {
-            mDatePickerDialog.show()
-       // }, colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFF0F9D58)) ) {
-            Text(text = "Open Date Picker", color = Color.White)
+        }
+        items(dateList) {
+            CalenderList(date = it)
         }
 
-        // Adding a space of 100dp height
-        Spacer(modifier = Modifier.size(100.dp))
-
-        // Displaying the mDate value in the Text
-        Text(text = "Selected Date: ${mDate.value}", fontSize = 30.sp, textAlign = TextAlign.Center)
-   // }
+    }
 }
 
-        /*
 @Composable
-fun Amount() {
-    TODO("Not yet implemented")
-}
+fun CalenderList(
+    date: DateData,
+    modifier: Modifier = Modifier
+        .animateContentSize(
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessLow
 
-*/
-*/
+            )
+        ),
+  //  checked : Boolean
 
 
-@Composable
-fun Table(
-    modifier: Modifier = Modifier,
-    rowModifier: Modifier = Modifier,
-    verticalLazyListState: LazyListState = rememberLazyListState(),
-    horizontalScrollState: ScrollState = rememberScrollState(),
-    columnCount: Int,
-    rowCount: Int,
-    beforeRow: (@Composable (rowIndex: Int) -> Unit)? = null,
-    afterRow: (@Composable (rowIndex: Int) -> Unit)? = null,
-    cellContent: @Composable (columnIndex: Int, rowIndex: Int) -> Unit
 ) {
-    val columnWidths = remember { mutableStateMapOf<Int, Int>() }
+    val number: Int
+    var expanded by remember { mutableStateOf(false) }
+    var checked by remember { mutableStateOf(false) }
+    val onCheckedChange: (Boolean) -> Unit = { value -> checked = value }
+    val isChecked = rememberSaveable{ mutableStateOf(false) }
 
-    Box(modifier = modifier.then(Modifier.horizontalScroll(horizontalScrollState))) {
-        LazyColumn(state = verticalLazyListState) {
-            items(rowCount) { rowIndex ->
-                Column {
-                    beforeRow?.invoke(rowIndex)
 
-                    Row(modifier = rowModifier) {
-                        (0 until columnCount).forEach { columnIndex ->
-                            Box(modifier = Modifier.layout { measurable, constraints ->
-                                val placeable = measurable.measure(constraints)
+    //val count: Int
+    //checkedState.value = checked
 
-                                val existingWidth = columnWidths[columnIndex] ?: 0
-                                val maxWidth = maxOf(existingWidth, placeable.width)
 
-                                if (maxWidth > existingWidth) {
-                                    columnWidths[columnIndex] = maxWidth
-                                }
+    Card(
+        modifier = Modifier.padding(8.dp),
+        elevation = 8.dp
+    ) {
 
-                                layout(width = maxWidth, height = placeable.height) {
-                                    placeable.placeRelative(0, 0)
-                                }
-                            }) {
-                                cellContent(columnIndex, rowIndex)
-                            }
-                        }
-                    }
-
-                    afterRow?.invoke(rowIndex)
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                CheckBox(
+                    checked,
+                    onCheckedChange,
+                    modifier = Modifier.weight(1f),
+                )
+                if(checked==true ){
+                    numberOfMeal++
                 }
+
+                Row(
+                    modifier = Modifier.weight(9f)
+                ) {
+                    DateCard(date.date)
+                }
+
+
+                Row(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    DisplayTimeButton(
+                        expanded = expanded,
+                        onClick = { expanded = !expanded }
+                    )
+                }
+
+            }
+            if (expanded) {
+                MealCourse()
+
             }
         }
     }
 }
+@Composable
+fun CheckBox(
+    isChecked: Boolean,
+    onChange: (Boolean) -> Unit,
+    modifier: Modifier
+){
+    Checkbox(
+        checked = isChecked,
+        onCheckedChange = onChange,
+
+
+        )
+}
+/*
+fun checking(value: Boolean) {
+    var numberCheckboxes : Int =0
+    if (value){
+        numberCheckboxes++
+    }
+}
 */
+@Composable
+fun MealCourse(
+
+) {
+
+    val checkedState1 = remember { mutableStateOf(false) }
+    val checkedState2 = remember { mutableStateOf(false) }
+    val checkedState3 = remember { mutableStateOf(false) }
+    Column() {
+        // BreakFast
+        Card(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxSize(),
+            elevation = 4.dp,
+
+
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Checkbox(
+                    checked = checkedState1.value,
+                    onCheckedChange = { checkedState1.value = it },
+                    modifier = Modifier.weight(1f),
+                    colors = CheckboxDefaults.colors(Color(0xFF142685))
+                )
+                Text(
+                    text = "Breakfast",
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .weight(10f)
+                        .padding(16.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        // Lunch
+        Card(
+            modifier = Modifier.padding(8.dp),
+            elevation = 4.dp
+
+            ) {
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Checkbox(
+                    checked = checkedState2.value,
+                    onCheckedChange = { checkedState2.value = it },
+                    modifier = Modifier.weight(1f),
+                    colors = CheckboxDefaults.colors(Color(0xFF142685)),
+
+                )
+
+                Text(
+                    text = "Lunch",
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .weight(10f)
+                        .padding(16.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        // Dinner
+        Card(
+            modifier = Modifier.padding(8.dp),
+            elevation = 4.dp
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Checkbox(
+                    checked = checkedState3.value,
+                    onCheckedChange = { checkedState3.value = it },
+                    modifier = Modifier.weight(1f),
+                    colors = CheckboxDefaults.colors(Color(0xFF142685))
+                )
+                Text(
+                    text = "Dinner",
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .weight(10f)
+                        .padding(16.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+
+
+    }
+}
+
+
+/*
+val interactionSource = remember { MutableInteractionSource() }
+val isPressed by interactionSource.collectIsPressedAsState()
+val color = if (isPressed) Color(0xFF142685) else Color.Black
+
+Button(
+    onClick = {},
+    interactionSource = interactionSource,
+    colors = ButtonDefaults.buttonColors(backgroundColor = color),
+    modifier = Modifier
+        .fillMaxWidth()
+        .height(50.dp)
+
+) {
+
+    Text(
+        text = stringResource(course),
+        color = Color.White
+    )
+
+}
+}*/
+
+
+@Composable
+fun DateCard(date: Int) {
+    Text(
+        text = date.toString(),
+        fontSize = 24.sp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        textAlign = TextAlign.Center
+    )
+
+
+}
+
+
+@Composable
+fun DueCard() {
+    Card() {
+
+    }
+}
+
+
+@Composable
+fun DisplayTimeButton(expanded: Boolean, onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        Icon(
+            imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+            tint = MaterialTheme.colors.secondary,
+            contentDescription = "Meal Course Selection",
+
+
+            )
+    }
+}
+
+
+@Composable
+fun TotalAmount(
+    numberOfMeals: Int
+){
+    var totalAmount :Int
+    totalAmount = numberOfMeals * 70
+    Text(
+        text = "Total Amount:  $totalAmount"
+    )
+}
+
+
+
+
